@@ -1,3 +1,4 @@
+# from itertools import chain
 from itertools import chain
 from rest_framework import generics
 from . import models
@@ -15,10 +16,18 @@ class ProjectDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class UserList(generics.ListCreateAPIView):
-    serializer_class = serializers.UserSerializer
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return serializers.UserSerializer
+        return serializers.ContributorSerializer
 
     def get_queryset(self):
         project = models.Project.objects.get(id=self.kwargs['pk'])
         author = project.author
         contributorsUser = models.User.objects.filter(contributor__project=project).values()
         return chain([author], contributorsUser)
+
+    def perform_create(self, serializer):
+        project_id = self.kwargs['pk']
+        project = models.Project.objects.get(id=project_id)
+        serializer.save(project=project)

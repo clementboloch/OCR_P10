@@ -13,3 +13,9 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         fields = ['first_name', 'last_name', 'email']
         model = User
+
+
+class ContributorSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = ['user']
+        model = models.Contributor
