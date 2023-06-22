@@ -2,7 +2,9 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.ProjectsList.as_view(), name='projects_list'),
+    path('', views.ProjectList.as_view(), name='project_list'),
+    path('<int:pk>/', views.ProjectDetail.as_view(), name='project_detail'),
+    path('<int:pk>/users/', views.UserList.as_view(), name='contributor_list'),
 ]
 
 # /signup/

@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 
 
 class Project(models.Model):
@@ -22,6 +23,14 @@ class Contributor(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     # permission
     # role
+
+    class Meta:
+        unique_together = ('user', 'project')
+
+    def save(self, *args, **kwargs):
+        if self.project.author == self.user:
+            raise ValidationError("The author cannot become a contributor.")
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.user} - {self.project}"
