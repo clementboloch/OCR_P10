@@ -43,3 +43,15 @@ class ContributorDelete(generics.DestroyAPIView):
         user_id = self.kwargs.get('user_id')
         contributor = get_object_or_404(self.queryset, project_id=project_id, user_id=user_id)
         return contributor
+
+
+class IssueList(generics.ListCreateAPIView):
+    serializer_class = serializers.IssueSerializer
+
+    def get_queryset(self):
+        project = models.Project.objects.get(id=self.kwargs['pk'])
+        return models.Issue.objects.filter(project=project)
+
+    def perform_create(self, serializer):
+        project = models.Project.objects.get(id=self.kwargs['pk'])
+        serializer.save(project=project)
