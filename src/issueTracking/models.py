@@ -1,6 +1,9 @@
 from django.db import models
-from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.conf import settings
+
+
+User = settings.AUTH_USER_MODEL
 
 
 class Project(models.Model):
@@ -25,7 +28,7 @@ class Contributor(models.Model):
     # role
 
     class Meta:
-        unique_together = ('user', 'project')
+        unique_together = ("user", "project")
 
     def save(self, *args, **kwargs):
         if self.project.author == self.user:
@@ -56,7 +59,9 @@ class Issue(models.Model):
         ("DONE", "Terminé"),
     ]
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    assignee = models.ForeignKey(User, on_delete=models.CASCADE, related_name="assignee", default=author)
+    assignee = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="assignee", default=author
+    )
     created_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

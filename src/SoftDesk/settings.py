@@ -38,15 +38,22 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # 3rd-party apps 
+    # 3rd-party apps
     'rest_framework',
+    'rest_framework_simplejwt',
 
     # Local
     'issueTracking',
+    'account',
 ]
 
+AUTH_USER_MODEL = 'account.UserData'
+
 # TODO: edit the permissions
-REST_FRAMEWORK = { 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
     ]
