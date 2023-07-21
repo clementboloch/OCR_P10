@@ -1,9 +1,9 @@
-# from itertools import chain
 from itertools import chain
 from django.shortcuts import get_object_or_404
 from rest_framework import generics
 from . import models
 from . import serializers
+from account.serializers import UserSerializer
 
 
 class ProjectList(generics.ListCreateAPIView):
@@ -19,7 +19,7 @@ class ProjectDetail(generics.RetrieveUpdateDestroyAPIView):
 class UserList(generics.ListCreateAPIView):
     def get_serializer_class(self):
         if self.request.method == 'GET':
-            return serializers.UserSerializer
+            return UserSerializer
         return serializers.ContributorSerializer
 
     def get_queryset(self):
