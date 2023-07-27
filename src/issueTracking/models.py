@@ -1,5 +1,4 @@
 from django.db import models
-from django.core.exceptions import ValidationError
 from django.conf import settings
 
 
@@ -29,11 +28,6 @@ class Contributor(models.Model):
 
     class Meta:
         unique_together = ("user", "project")
-
-    def save(self, *args, **kwargs):
-        if self.project.author == self.user:
-            raise ValidationError("The author cannot become a contributor.")
-        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.user} - {self.project}"
