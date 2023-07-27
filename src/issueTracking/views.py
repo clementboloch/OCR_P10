@@ -5,6 +5,7 @@ from . import models
 from . import serializers
 from account.serializers import UserSerializer
 from rest_framework.permissions import IsAuthenticated
+from .permissions import IsContributor
 
 
 class ProjectList(generics.ListCreateAPIView):
@@ -15,14 +16,14 @@ class ProjectList(generics.ListCreateAPIView):
 
 
 class ProjectDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, IsContributor,)
 
     queryset = models.Project.objects.all()
     serializer_class = serializers.ProjectSerializer
 
 
 class UserList(generics.ListCreateAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, IsContributor,)
 
     def get_serializer_class(self):
         if self.request.method == 'GET':
@@ -42,7 +43,7 @@ class UserList(generics.ListCreateAPIView):
 
 
 class ContributorDelete(generics.DestroyAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, IsContributor,)
 
     queryset = models.Contributor.objects.all()
     serializer_class = serializers.ContributorSerializer
@@ -55,7 +56,7 @@ class ContributorDelete(generics.DestroyAPIView):
 
 
 class IssueList(generics.ListCreateAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, IsContributor,)
 
     serializer_class = serializers.IssueSerializer
 
