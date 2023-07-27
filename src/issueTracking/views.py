@@ -4,19 +4,26 @@ from rest_framework import generics
 from . import models
 from . import serializers
 from account.serializers import UserSerializer
+from rest_framework.permissions import IsAuthenticated
 
 
 class ProjectList(generics.ListCreateAPIView):
+    permission_classes = (IsAuthenticated,)
+
     queryset = models.Project.objects.all()
     serializer_class = serializers.ProjectSerializer
 
 
 class ProjectDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsAuthenticated,)
+
     queryset = models.Project.objects.all()
     serializer_class = serializers.ProjectSerializer
 
 
 class UserList(generics.ListCreateAPIView):
+    permission_classes = (IsAuthenticated,)
+
     def get_serializer_class(self):
         if self.request.method == 'GET':
             return UserSerializer
@@ -35,6 +42,8 @@ class UserList(generics.ListCreateAPIView):
 
 
 class ContributorDelete(generics.DestroyAPIView):
+    permission_classes = (IsAuthenticated,)
+
     queryset = models.Contributor.objects.all()
     serializer_class = serializers.ContributorSerializer
 
@@ -46,6 +55,8 @@ class ContributorDelete(generics.DestroyAPIView):
 
 
 class IssueList(generics.ListCreateAPIView):
+    permission_classes = (IsAuthenticated,)
+
     serializer_class = serializers.IssueSerializer
 
     def get_queryset(self):

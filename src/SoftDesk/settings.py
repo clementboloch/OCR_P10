@@ -48,15 +48,16 @@ INSTALLED_APPS = [
 ]
 
 AUTH_USER_MODEL = 'account.UserData'
+LOGIN_URL = '/account/api/login/'
 
 # TODO: edit the permissions
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-    'DEFAULT_PERMISSION_CLASSES': [
+    'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',
-    ]
+    ),
 }
 
 MIDDLEWARE = [
