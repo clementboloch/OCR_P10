@@ -8,6 +8,12 @@ class ProjectSerializer(serializers.ModelSerializer):
         model = models.Project
 
 
+class ProjectCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = ['title', 'description', 'type']
+        model = models.Project
+
+
 class ContributorSerializer(serializers.ModelSerializer):
     class Meta:
         fields = ['user']

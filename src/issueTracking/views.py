@@ -13,6 +13,16 @@ class ProjectList(generics.ListCreateAPIView):
 
     queryset = models.Project.objects.all()
     serializer_class = serializers.ProjectSerializer
+    serializer_class_post = serializers.ProjectCreateSerializer
+
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return self.serializer_class_post
+        return super().get_serializer_class()
+
+    def perform_create(self, serializer):
+        print(self.request.user)
+        serializer.save(author=self.request.user)
 
 
 class ProjectDetail(generics.RetrieveUpdateDestroyAPIView):

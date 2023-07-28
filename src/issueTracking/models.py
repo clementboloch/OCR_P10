@@ -4,16 +4,18 @@ from django.conf import settings
 
 User = settings.AUTH_USER_MODEL
 
+TYPE_CHOICES = [
+    ("BE", "Backe-end"),
+    ("FE", "Front-end"),
+    ("iOS", "iOS"),
+    ("Andr", "Android"),
+]
+
 
 class Project(models.Model):
     title = models.CharField(max_length=50)
     description = models.CharField(max_length=250)
-    type = [
-        ("BE", "Backe-end"),
-        ("FE", "Front-end"),
-        ("iOS", "iOS"),
-        ("Andr", "Android"),
-    ]
+    type = models.CharField(max_length=4, choices=TYPE_CHOICES, default="BE")
     author = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
