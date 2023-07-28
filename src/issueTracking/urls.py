@@ -7,6 +7,7 @@ urlpatterns = [
     path('<int:pk>/users/', views.ContributorList.as_view(), name='contributor_list'),
     path('<int:project_id>/users/<int:user_id>/', views.ContributorDelete.as_view(), name='contributor_delete'),
     path('<int:pk>/issues/', views.IssueList.as_view(), name='issue_list'),
+    path('<int:project_id>/issues/<int:issue_id>/', views.IssueUpdate.as_view(), name='issue_update'),
 ]
 
 # /signup/

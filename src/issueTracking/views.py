@@ -4,7 +4,7 @@ from . import models
 from . import serializers
 from account.serializers import UserSerializer
 from rest_framework.permissions import IsAuthenticated
-from .permissions import HasPermission
+from .permissions import HasPermission, IsContributor
 from account.models import UserData as User
 
 
@@ -76,7 +76,7 @@ class ContributorDelete(generics.DestroyAPIView):
 
 
 class IssueList(generics.ListCreateAPIView):
-    permission_classes = (IsAuthenticated, HasPermission,)
+    permission_classes = (IsAuthenticated, IsContributor,)
 
     serializer_class = serializers.IssueSerializer
     serializer_class_post = serializers.IssueCreateSerializer
@@ -93,4 +93,30 @@ class IssueList(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         project = models.Project.objects.get(id=self.kwargs['pk'])
+        self.check_object_permissions(self.request, project)
         serializer.save(project=project, author=self.request.user)
+
+
+class IssueUpdate(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsAuthenticated, HasPermission,)
+
+    queryset = models.Issue.objects.all()
+    serializer_class = serializers.IssueSerializer
+    serializer_class_put = serializers.IssueCreateSerializer
+
+    def get_serializer_class(self):
+        if self.request.method == 'PUT':
+            return self.serializer_class_put
+        return super().get_serializer_class()
+
+    def get_object(self, queryset=None):
+        project_id = self.kwargs.get('project_id')
+        project = get_object_or_404(models.Project, id=project_id)
+        issue_id = self.kwargs.get('issue_id')
+        issue = get_object_or_404(self.queryset, project_id=project_id, id=issue_id)
+        if self.request.method in permissions.SAFE_METHODS:
+            obj = project
+        else:
+            obj = issue
+        self.check_object_permissions(self.request, obj)
+        return issue
