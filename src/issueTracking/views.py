@@ -40,7 +40,7 @@ class ProjectDetail(generics.RetrieveUpdateDestroyAPIView):
             return self.serializer_class_post
 
 
-class UserList(generics.ListCreateAPIView):
+class ContributorList(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticated, HasPermission,)
 
     def get_serializer_class(self):
@@ -57,6 +57,7 @@ class UserList(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         project_id = self.kwargs['pk']
         project = models.Project.objects.get(id=project_id)
+        self.check_object_permissions(self.request, project)
         serializer.save(project=project)
 
 
