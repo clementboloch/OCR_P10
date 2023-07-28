@@ -1,10 +1,10 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import generics
+from rest_framework import generics, permissions
 from . import models
 from . import serializers
 from account.serializers import UserSerializer
 from rest_framework.permissions import IsAuthenticated
-from .permissions import IsContributor, IsAuthor
+from .permissions import IsContributor, IsAuthor, HasPermission
 from account.models import UserData as User
 
 
@@ -26,10 +26,18 @@ class ProjectList(generics.ListCreateAPIView):
 
 
 class ProjectDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (IsAuthenticated, IsContributor,)
+    permission_classes = (IsAuthenticated, HasPermission,)
 
     queryset = models.Project.objects.all()
     serializer_class = serializers.ProjectSerializer
+
+    serializer_class_post = serializers.ProjectCreateSerializer
+
+    def get_serializer_class(self):
+        if self.request.method in permissions.SAFE_METHODS:
+            return super().get_serializer_class()
+        else:
+            return self.serializer_class_post
 
 
 class UserList(generics.ListCreateAPIView):
