@@ -21,7 +21,6 @@ class ProjectList(generics.ListCreateAPIView):
         return super().get_serializer_class()
 
     def perform_create(self, serializer):
-        print(self.request.user)
         serializer.save(author=self.request.user)
 
 
@@ -80,6 +79,12 @@ class IssueList(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticated, HasPermission,)
 
     serializer_class = serializers.IssueSerializer
+    serializer_class_post = serializers.IssueCreateSerializer
+
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return self.serializer_class_post
+        return super().get_serializer_class()
 
     def get_queryset(self):
         project = models.Project.objects.get(id=self.kwargs['pk'])
@@ -88,4 +93,4 @@ class IssueList(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         project = models.Project.objects.get(id=self.kwargs['pk'])
-        serializer.save(project=project)
+        serializer.save(project=project, author=self.request.user)

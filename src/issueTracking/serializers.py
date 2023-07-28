@@ -24,3 +24,9 @@ class IssueSerializer(serializers.ModelSerializer):
     class Meta:
         fields = '__all__'
         model = models.Issue
+
+
+class IssueCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        exclude = ['author']
+        model = models.Issue
