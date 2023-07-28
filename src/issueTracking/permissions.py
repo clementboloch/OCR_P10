@@ -22,3 +22,15 @@ class IsAuthor(permissions.BasePermission):
         # Only allow the author of the ressource to access it.
         # Check if the author of the ressource is the user.
         return obj.author == request.user
+
+
+class HasPermission(permissions.BasePermission):
+    """
+    Custom permission to only allow users with the permission to access the ressource.
+    """
+
+    def has_object_permission(self, request, view, obj):
+        if request.method in permissions.SAFE_METHODS:
+            return Contributor.objects.filter(user=request.user, project=obj).exists()
+        else:
+            return obj.author == request.user
