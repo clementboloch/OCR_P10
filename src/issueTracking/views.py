@@ -4,7 +4,7 @@ from . import models
 from . import serializers
 from account.serializers import UserSerializer
 from rest_framework.permissions import IsAuthenticated
-from .permissions import IsContributor, IsAuthor, HasPermission
+from .permissions import HasPermission
 from account.models import UserData as User
 
 
@@ -41,7 +41,7 @@ class ProjectDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class UserList(generics.ListCreateAPIView):
-    permission_classes = (IsAuthenticated, IsContributor,)
+    permission_classes = (IsAuthenticated, HasPermission,)
 
     def get_serializer_class(self):
         if self.request.method == 'GET':
@@ -61,7 +61,7 @@ class UserList(generics.ListCreateAPIView):
 
 
 class ContributorDelete(generics.DestroyAPIView):
-    permission_classes = (IsAuthenticated, IsContributor, IsAuthor,)
+    permission_classes = (IsAuthenticated, HasPermission,)
 
     queryset = models.Contributor.objects.all()
     serializer_class = serializers.ContributorSerializer
@@ -76,7 +76,7 @@ class ContributorDelete(generics.DestroyAPIView):
 
 
 class IssueList(generics.ListCreateAPIView):
-    permission_classes = (IsAuthenticated, IsContributor,)
+    permission_classes = (IsAuthenticated, HasPermission,)
 
     serializer_class = serializers.IssueSerializer
 
