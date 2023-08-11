@@ -9,15 +9,5 @@ urlpatterns = [
     path('<int:pk>/issues/', views.IssueList.as_view(), name='issue_list'),
     path('<int:project_id>/issues/<int:issue_id>/', views.IssueUpdate.as_view(), name='issue_update'),
     path('<int:project_id>/issues/<int:issue_id>/comments/', views.CommentList.as_view(), name='comment_list'),
+    path('<int:project_id>/issues/<int:issue_id>/comments/<comment_id>/', views.CommentUpdate.as_view(), name='comment_update'),
 ]
-
-# [x] /signup/
-# [x] /login/
-# [x] /projects/
-# [x] /projects/{id}/
-# [x] /projects/{id}/users/
-# [x] /projects/{id}/users/{id}
-# [x] /projects/{id}/issues/
-# [x] /projects/{id}/issues/{id}
-# [ ] /projects/{id}/issues/{id}/comments/
-# [ ] /projects/{id}/issues/{id}/comments/{id}

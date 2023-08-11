@@ -144,3 +144,29 @@ class CommentList(generics.ListCreateAPIView):
         issue = models.Issue.objects.get(id=self.kwargs['issue_id'])
         self.check_object_permissions(self.request, project)
         serializer.save(project=project, author=self.request.user, issue=issue)
+
+
+class CommentUpdate(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsAuthenticated, HasPermission,)
+
+    queryset = models.Comment.objects.all()
+    serializer_class = serializers.CommentSerializer
+    serializer_class_put = serializers.CommentCreateSerializer
+
+    def get_serializer_class(self):
+        if self.request.method == 'PUT':
+            return self.serializer_class_put
+        return super().get_serializer_class()
+
+    def get_object(self, queryset=None):
+        project_id = self.kwargs.get('project_id')
+        project = get_object_or_404(models.Project, id=project_id)
+        issue_id = self.kwargs.get('issue_id')
+        comment_id = self.kwargs.get('comment_id')
+        comment = get_object_or_404(self.queryset, project_id=project_id, issue_id=issue_id, id=comment_id)
+        if self.request.method in permissions.SAFE_METHODS:
+            obj = project
+        else:
+            obj = comment
+        self.check_object_permissions(self.request, obj)
+        return comment
