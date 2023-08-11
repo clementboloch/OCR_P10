@@ -43,8 +43,6 @@ class Project(models.Model):
 class Contributor(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    # permission
-    # role
 
     class Meta:
         unique_together = ("user", "project")
@@ -54,7 +52,7 @@ class Contributor(models.Model):
 
 
 class Issue(models.Model):
-    title = models.CharField(max_length=50)
+    title = models.CharField(max_length=50, unique=True)
     description = models.CharField(max_length=250)
     tag = models.CharField(max_length=11, choices=TAG_CHOICES)
     priority = models.CharField(max_length=6, choices=PRIORITY_CHOICES)
