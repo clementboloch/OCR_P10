@@ -48,14 +48,14 @@ class ContributorList(generics.ListCreateAPIView):
         return serializers.ContributorSerializer
 
     def get_queryset(self):
-        project = models.Project.objects.get(id=self.kwargs['pk'])
-        self.check_object_permissions(self.request, project)
+        project_id = self.kwargs.get('project_id')
+        project = get_object_or_404(models.Project, id=project_id)
         contributorsUser = User.objects.filter(contributor__project=project).values()
         return contributorsUser
 
     def perform_create(self, serializer):
-        project_id = self.kwargs['pk']
-        project = models.Project.objects.get(id=project_id)
+        project_id = self.kwargs.get('project_id')
+        project = get_object_or_404(models.Project, id=project_id)
         self.check_object_permissions(self.request, project)
         serializer.save(project=project)
 
@@ -87,12 +87,14 @@ class IssueList(generics.ListCreateAPIView):
         return super().get_serializer_class()
 
     def get_queryset(self):
-        project = models.Project.objects.get(id=self.kwargs['pk'])
+        project_id = self.kwargs.get('project_id')
+        project = get_object_or_404(models.Project, id=project_id)
         self.check_object_permissions(self.request, project)
         return models.Issue.objects.filter(project=project)
 
     def perform_create(self, serializer):
-        project = models.Project.objects.get(id=self.kwargs['pk'])
+        project_id = self.kwargs.get('project_id')
+        project = get_object_or_404(models.Project, id=project_id)
         self.check_object_permissions(self.request, project)
         serializer.save(project=project, author=self.request.user)
 
@@ -134,13 +136,15 @@ class CommentList(generics.ListCreateAPIView):
         return super().get_serializer_class()
 
     def get_queryset(self):
-        project = models.Project.objects.get(id=self.kwargs['project_id'])
+        project_id = self.kwargs.get('project_id')
+        project = get_object_or_404(models.Project, id=project_id)
         self.check_object_permissions(self.request, project)
         issue = models.Issue.objects.get(id=self.kwargs['issue_id'])
         return models.Comment.objects.filter(project=project, issue=issue)
 
     def perform_create(self, serializer):
-        project = models.Project.objects.get(id=self.kwargs['project_id'])
+        project_id = self.kwargs.get('project_id')
+        project = get_object_or_404(models.Project, id=project_id)
         issue = models.Issue.objects.get(id=self.kwargs['issue_id'])
         self.check_object_permissions(self.request, project)
         serializer.save(project=project, author=self.request.user, issue=issue)
