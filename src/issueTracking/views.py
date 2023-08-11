@@ -120,3 +120,27 @@ class IssueUpdate(generics.RetrieveUpdateDestroyAPIView):
             obj = issue
         self.check_object_permissions(self.request, obj)
         return issue
+
+
+class CommentList(generics.ListCreateAPIView):
+    permission_classes = (IsAuthenticated, IsContributor,)
+
+    serializer_class = serializers.CommentSerializer
+    serializer_class_post = serializers.CommentCreateSerializer
+
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return self.serializer_class_post
+        return super().get_serializer_class()
+
+    def get_queryset(self):
+        project = models.Project.objects.get(id=self.kwargs['project_id'])
+        self.check_object_permissions(self.request, project)
+        issue = models.Issue.objects.get(id=self.kwargs['issue_id'])
+        return models.Comment.objects.filter(project=project, issue=issue)
+
+    def perform_create(self, serializer):
+        project = models.Project.objects.get(id=self.kwargs['project_id'])
+        issue = models.Issue.objects.get(id=self.kwargs['issue_id'])
+        self.check_object_permissions(self.request, project)
+        serializer.save(project=project, author=self.request.user, issue=issue)

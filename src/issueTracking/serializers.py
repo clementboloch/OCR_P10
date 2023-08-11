@@ -30,3 +30,15 @@ class IssueCreateSerializer(serializers.ModelSerializer):
     class Meta:
         exclude = ['author']
         model = models.Issue
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = '__all__'
+        model = models.Comment
+
+
+class CommentCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        exclude = ['author', 'issue', 'project']
+        model = models.Comment

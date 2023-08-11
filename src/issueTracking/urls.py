@@ -8,24 +8,16 @@ urlpatterns = [
     path('<int:project_id>/users/<int:user_id>/', views.ContributorDelete.as_view(), name='contributor_delete'),
     path('<int:pk>/issues/', views.IssueList.as_view(), name='issue_list'),
     path('<int:project_id>/issues/<int:issue_id>/', views.IssueUpdate.as_view(), name='issue_update'),
+    path('<int:project_id>/issues/<int:issue_id>/comments/', views.CommentList.as_view(), name='comment_list'),
 ]
 
-# /signup/
-# /login/
-# /projects/
-# /projects/
-# /projects/{id}/
-# /projects/{id}/
-# /projects/{id}/
-# /projects/{id}/users/
-# /projects/{id}/users/
-# /projects/{id}/users/{id}
-# /projects/{id}/issues/
-# /projects/{id}/issues/
-# /projects/{id}/issues/{id}
-# /projects/{id}/issues/{id}
-# /projects/{id}/issues/{id}/comments/
-# /projects/{id}/issues/{id}/comments/
-# /projects/{id}/issues/{id}/comments/{id}
-# /projects/{id}/issues/{id}/comments/{id}
-# /projects/{id}/issues/{id}/comments/{id}
+# [x] /signup/
+# [x] /login/
+# [x] /projects/
+# [x] /projects/{id}/
+# [x] /projects/{id}/users/
+# [x] /projects/{id}/users/{id}
+# [x] /projects/{id}/issues/
+# [x] /projects/{id}/issues/{id}
+# [ ] /projects/{id}/issues/{id}/comments/
+# [ ] /projects/{id}/issues/{id}/comments/{id}
