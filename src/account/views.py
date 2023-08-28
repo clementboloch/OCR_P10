@@ -36,7 +36,7 @@ class RegisterView(APIView):
 
 
 # view for listing and updating user data
-class ListUpdateView(generics.RetrieveUpdateAPIView):
+class ManageView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsAuthenticated,)
 
     queryset = UserData.objects.all()
