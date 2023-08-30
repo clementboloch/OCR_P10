@@ -19,7 +19,7 @@ class HasPermission(permissions.BasePermission):
     """
 
     def has_object_permission(self, request, view, obj):
-        if request.method in permissions.SAFE_METHODS:
+        if obj.author == request.user:
+            return True
+        elif request.method in permissions.SAFE_METHODS:
             return Contributor.objects.filter(user=request.user, project=obj).exists()
-        else:
-            return obj.author == request.user

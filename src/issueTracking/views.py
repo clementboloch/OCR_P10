@@ -21,7 +21,11 @@ class ProjectList(generics.ListCreateAPIView):
         return super().get_serializer_class()
 
     def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
+        project = serializer.save(author=self.request.user)
+        models.Contributor.objects.create(
+            project=project,
+            user=self.request.user,
+        )
 
 
 class ProjectDetail(generics.RetrieveUpdateDestroyAPIView):
