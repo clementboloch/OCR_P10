@@ -9,6 +9,7 @@ Développeur d'Application Python - Projet 10
 It is recommended to create a dedicated directory to download the project.
 In a terminal:
 `mkdir dir_name`
+`cd dir_name`
 
 ### Git setup
 Initialize your local Git repository. In a terminal (in your dedicated directory):
@@ -21,7 +22,7 @@ Then clone the remote repository in your local repository with the https link. Y
 Install pipenv if you haven't already. You can install it using pip:
 `pip install pipenv`
 Go inside the `OCR_P10` directory and initialize a new virtual environment using pipenv before installing the dependencies:
-`cd OCR_P9`
+`cd OCR_P10`
 `pipenv --python 3.9`
 
 Install the required packages from the Pipfile:
@@ -30,9 +31,13 @@ Install the required packages from the Pipfile:
 And activate the virtual environment:
 `pipenv shell`
 
+## Database setup
+Go to src folder:
+`cd src`
+And make the migrations:
+`python manage.py migrate`
 
 ## Launch the program
 
-Go inside the `src` directory and launch the local server:
-`cd src`
+Launch the local server:
 `python manage.py runserver`
